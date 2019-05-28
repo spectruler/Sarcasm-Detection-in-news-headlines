@@ -1,0 +1,143 @@
+#:import COLOR kivy.utils.get_color_from_hex
+#: set RED "#F94A69"
+#: set GREEN "#06A5AB"
+
+<Label>:
+    markup: True
+    font_name: "Roboto"
+
+<Button>:
+    font_name: "Roboto"
+    bold: True
+    background_normal: "./images/button_normal.png"
+    background_down: "./images.button_down.png"
+    background_color: COLOR("#0066BA")
+    border: (2,2,2,2)
+
+
+<DetectSarcasmRoot>:
+    orientation: 'vertical'
+    kivy_screen_manager: kivy_screen_manager
+    start_screen: start_screen
+    padding: 10
+    spacing: 10
+    ActionBar:
+        pos_hint: {'top':1}
+        ActionView:
+            ActionPrevious:
+                title: "Sarcasm Detection"
+                with_previous: False
+
+    ScreenManager:
+        id: kivy_screen_manager
+        StartScreen:
+            id: start_screen
+            name: "start_screen"
+
+<StartScreen@Screen>:
+    tp: TP
+    tn: TN
+    fp: FP
+    fn: FN
+    accuracy: accuracy
+    process: process
+    classification: classification
+
+
+    BoxLayout:
+        orientation: "vertical"
+
+        BoxLayout:
+            size_hint_y: None
+            height: '40dp'
+            Spinner:
+                id: baseline
+                text: "Contradiction"
+                values: ('Contradiction','N_gram','Contra + coherence')
+                pos_hint: {'center_x':.5,'center_y':0.5}
+                size_hint_x: 15
+                background_color: COLOR('#FFac8B')
+            Spinner:
+                id: n_gram
+                text: '1 gram'
+                values: ('1 gram','2 gram', '3 gram')
+                size_hint_x: 15
+                background_color: COLOR('#F5B546')
+            Button:
+                id: process
+                text:'Process'
+                on_press: app.root.process(baseline.text,n_gram.text)
+                size_hint_x:15
+                disable: True
+                background_color: COLOR(GREEN)
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: "50dp"
+            pos: self.pos
+            Label:
+                text: "[b]Confusion Matix[/b]"
+        GridLayout:
+            cols: 2
+            spacing:10
+            Button:
+                id: TP
+                text: 'TP'
+                size_hint_x:15
+                background_color: COLOR(GREEN)
+
+            Button:
+                id: FN
+                text: 'FN'
+                size_hint_x:15
+                background_color: COLOR(RED)
+
+
+
+            Button:
+                id: FP
+                text: 'FP'
+                size_hint_x:15
+                background_color: COLOR(RED)
+
+
+            Button:
+                id: TN
+                text: 'TN'
+                size_hint_x:15
+                background_color: COLOR(GREEN)
+
+
+
+        BoxLayout:
+            orientation: "vertical"
+            pos: self.pos
+            size_hint_y: None
+            height: "70dp"
+            Label: 
+                text: "[b]Accuracy[/b]"
+            Button:
+                id: accuracy
+                text:"0 %"
+                size_hint_x: 1
+        BoxLayout:
+            orientation:"vertical"
+            Label:
+                size_hint_y: None
+                height: "20dp"
+                text: "[b]Classification Report[/b]"
+            Label:
+                id: classification
+                text: ""
+                halign: 'center'
+                
+            
+
+
+
+
+            
+            
+
+
+
